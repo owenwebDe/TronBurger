@@ -1,40 +1,19 @@
 import Phaser from "phaser";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTgUser } from "../hooks/use-tg-user"; // Assuming you have a hook to get the Telegram user ID
 import { useCreateFallingVirusesScene } from "../game/useCreateFallingVirusesScene";
 
 export const Game = () => {
   const phaserGameRef = useRef<Phaser.Game | null>(null);
   const navigate = useNavigate();
-  const currentTgUser = useTgUser();
 
   const handleGameEndCallback = useCallback(
-    async (score: number) => {
-      if (currentTgUser?.id) {
-        // Make a POST request to your backend API
-        try {
-          await fetch("https://your-ngrok-id.ngrok.io/api/updatePoints", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              tgUserId: currentTgUser.id,
-              points: score,
-            }),
-          });
-        } catch (error) {
-          console.error("Error updating points:", error);
-        }
-      }
-
-      // Navigate to result screen after updating points
+    (score: number) => {
       navigate("/result", {
         state: { score },
       });
     },
-    [navigate, currentTgUser],
+    [navigate],
   );
 
   const Scene = useCreateFallingVirusesScene(handleGameEndCallback);
