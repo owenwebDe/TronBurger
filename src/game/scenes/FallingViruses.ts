@@ -41,7 +41,7 @@ export class FallingViruses extends Phaser.Scene {
       this.load.setBaseURL(window.location.origin + "/project-tg-game");
     }
 
-    this.load.image("background", "/assets/game-background.png");
+    this.load.image("background", "./game-background.png");
     this.load.image("multiplier", "/assets/multiplier.png");
 
     this.load.atlas(
